@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        body{
+            background-color: #889b73;
+        }
+        div {
+            font-size: 100px;
+            user-select: none;
+        }
+        p {
+            font-size: 20px;
+        }
+        h3 {
+            font-size: 30px;
+            color: #faef56;
+        }
+        button {
+            font-size: 25px;
+            border: 1px solid black;
+            width: 200px;
+            height: 50px;
+
+        }
+        .bt1{
+            background-color: rgb(187, 241, 241);
+        }
+        .bt2{
+            background-color: rgb(148, 172, 207);
+        }
+        .bt3{
+            background-color: rgb(255, 0, 0);
+            color:rgb(255, 255, 0);
+            font-size: 15px;
+            width: 60px;
+            height: 25px;
+        }
+        .bt4{
+            background-color: rgb(113, 187, 221);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script>
+         // hjelpefunksjoner
+         function getEmoji(aEmojiIndex) {
+            if(aEmojiIndex == 0) return '&#x1F4B4';
+            if(aEmojiIndex == 1) return '&#x1F4B5';
+            if(aEmojiIndex == 2) return '&#x1F4B6';
+            if(aEmojiIndex == 3) return '&#x1F4B7';
+            
+            return '';
+        }
+
+        function getNextEmojiIndex(aEmojiIndex) {
+            const maxEmojiIndex = 3;
+            aEmojiIndex++;
+            if (aEmojiIndex > maxEmojiIndex) {
+                aEmojiIndex = 0;
+            }
+            return aEmojiIndex;
+        }
+
+        // model
+        let points = 0;
+        let pointsPerClick = 1;
+        let emojiIndex = 0;
+
+        // view
+                updateView();
+        function updateView() {
+            var emoji = getEmoji(emojiIndex);
+            document.getElementById('app').innerHTML = `
+                <h3>CLICKER GAME!</h3>
+                <p>Klikk på seddelen å se hva som skjer. Det er også mulig å teste ut knappene. For de som er markert med &#x1F4B8 må du ha like mange poeng som det står inne i parantesen. </p>
+                <div id="image" onclick="doClick()">${emoji}</div>
+                <div id="pointsInfo">${points}</div>
+                <button class="bt1" onclick="buyUpgrade(10)">Update(10 &#x1F4B8)</button>
+                <button class="bt2" onclick="buyTimes(100)">Cheats(100 &#x1F4B8)</button>
+                <button class="bt4" onclick="antallPoeng()">Antall poeng </button>
+                <button class="bt3" onclick="reset()">Reset</button>
+            `;
+        }
+
+        // controller
+        function doClick() {
+            points += pointsPerClick;
+            emojiIndex = getNextEmojiIndex(emojiIndex);
+            updateView();
+        }
+
+        function buyUpgrade(upgradeCost) {
+            if (points < upgradeCost) return;
+            points -= upgradeCost;
+            pointsPerClick++;
+            updateView();
+        }
+        function buyTimes(timesUpgrade){
+            if(points < timesUpgrade) return;
+            points -= timesUpgrade;
+            pointsPerClick*= 10;
+            updateView();
+        }
+        function antallPoeng(){
+            alert(`Du har ${points} poeng!`);
+        }
+        function reset(){
+            points = 0;
+            pointsPerClick = 1;
+            emojiIndex = 0;
+            updateView();
+        }
+        
+    </script>
+</body>
+
+</html>
